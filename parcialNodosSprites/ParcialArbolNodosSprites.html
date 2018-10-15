@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ES">
+	<head>
+		
+		<title>
+			Arbol de nodos
+		</title>
+		<style type="text/css">
+			li{
+				list-style-type:none;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			window.onload = function(){
+				document.getElementById('a1').innerHTML = "<canvas id='a1Canv'  width='59' height='28'></canvas>"
+				var nodoImage = new Image();
+				nodoImage.src = "./imgNodoSprites.png";
+				var canvas = document.getElementById("a1Canv");
+				canvas.width = 59;
+				canvas.height = 28;
+				var nodo = sprite ({context: canvas.getContext("2d"), width: 59, height: 28, image: nodoImage, numImg : 1});
+				nodoImage.onload = function(){ nodo.render(); }
+			}
+		
+		
+			function agregarNodo() {
+				var numNodo = document.getElementById('numNodo').value.trim();
+				if(numNodo == ""){
+					numNodo = "1";
+				}
+				//obtener la cantidad de nodos + 1
+				var node=document.getElementById(numNodo);
+				var cant = node.parentNode.childElementCount + 1;
+				
+				var version = numNodo.split(".");
+				fLen = version.length;
+				var idNodeNuevo = "";
+				
+				if(fLen > 1){
+					for (i = 0; i < fLen-1; i++) {
+						idNodeNuevo += version[i] + ".";
+					}
+				}
+				
+				idNodeNuevo += cant;
+				
+				
+				var nodoImageNuevo = new Image();
+				nodoImageNuevo.src = "./imgNodoSprites.png";
+				var canvasNuevo = document.createElement("canvas");
+				canvasNuevo.id = "a"+idNodeNuevo+"Canv";
+				canvasNuevo.width = 59;
+				canvasNuevo.height = 28;
+				var nodoNuevoCv = sprite ({context: canvasNuevo.getContext("2d"), width: 59, height: 28, image: nodoImageNuevo, numImg : 1});
+				nodoImageNuevo.onload = function(){ nodoNuevoCv.render(); };
+				
+				var elemNuevoA = document.createElement('a');
+				elemNuevoA.id = "a"+idNodeNuevo;
+				elemNuevoA.onclick = function(){ accion(this.id) };
+				elemNuevoA.appendChild(canvasNuevo);
+				
+				var nodeNuevo = document.createElement('li');
+				nodeNuevo.id=idNodeNuevo;
+				nodeNuevo.appendChild(elemNuevoA);
+				
+				document.getElementById(numNodo).parentNode.appendChild(nodeNuevo);
+				
+				document.getElementById('botones').style.display = 'none';
+				
+				var nodoImage = new Image();
+				nodoImage.src = "./imgNodoSprites.png";
+				var canvas = document.getElementById("a"+numNodo+"Canv");
+				canvas.width = 59;
+				canvas.height = 28;
+				var nodo = sprite ({context: canvas.getContext("2d"), width: 59, height: 28, image: nodoImage, numImg : 1});
+				nodoImage.onload = function(){ nodo.render(); }
+			}
+			
+			function agregarHijo(charDig, imput) {
+				var numNodo = document.getElementById('numNodo').value.trim();
+				if(numNodo == ""){
+					numNodo = "1";
+				}
+				//obtener la cantidad de nodos + 1
+				node=document.getElementById(numNodo);
+				
+				//obtener la cantidad de nodos + 1
+				node=document.getElementById(numNodo);
+				var cant = node.childElementCount + 1;
+				
+				var version = numNodo.split(".");
+				fLen = version.length;
+				var idNodeNuevo = "";
+				for (i = 0; i < fLen; i++) {
+					idNodeNuevo += version[i] + ".";
+				}
+				
+				idNodeNuevo += cant;
+				
+				var nodoImageNuevo = new Image();
+				nodoImageNuevo.src = "./imgNodoSprites.png";
+				var canvasNuevo = document.createElement("canvas");
+				canvasNuevo.id = "a"+idNodeNuevo+"Canv";
+				canvasNuevo.width = 59;
+				canvasNuevo.height = 28;
+				var nodoNuevoCv = sprite ({context: canvasNuevo.getContext("2d"), width: 59, height: 28, image: nodoImageNuevo, numImg : 1});
+				nodoImageNuevo.onload = function(){ nodoNuevoCv.render(); };
+				
+				var elemNuevoA = document.createElement('a');
+				elemNuevoA.id = "a"+idNodeNuevo;
+				elemNuevoA.onclick = function(){ accion(this.id) };
+				elemNuevoA.appendChild(canvasNuevo);
+				
+				var nodeNuevo = document.createElement('li');
+				nodeNuevo.id=idNodeNuevo;
+				nodeNuevo.appendChild(elemNuevoA);
+				
+				var nodeNuevoHijo = document.createElement('ul');
+				nodeNuevoHijo.appendChild(nodeNuevo);
+				
+				node=document.getElementById(numNodo);
+				node.appendChild(nodeNuevoHijo);
+				
+				document.getElementById('botones').style.display = 'none';
+				
+				var nodoImage = new Image();
+				nodoImage.src = "./imgNodoSprites.png";
+				var canvas = document.getElementById("a"+numNodo+"Canv");
+				canvas.width = 59;
+				canvas.height = 28;
+				var nodo = sprite ({context: canvas.getContext("2d"), width: 59, height: 28, image: nodoImage, numImg : 1});
+				nodoImage.onload = function(){ nodo.render(); }
+			}
+			
+			
+			function borrarNodo() {
+				var numNodo = document.getElementById('numNodo').value.trim();
+				if(numNodo == ""){
+					numNodo = "1";
+				}
+				if(numNodo == "1") {
+					alert('NO se puede borrar el nodo principal');
+				} else {
+					node=document.getElementById(numNodo);
+					node.parentNode.removeChild(node);
+					document.getElementById('botones').style.display = 'none';
+				}
+			}
+			function accion(element) {
+				var numNodo = document.getElementById('numNodo').value.trim(); //input oculto guarda el seleccionado
+				if(numNodo == ""){
+					numNodo = "1";
+				}
+				var elemAnt =document.getElementById('a'+numNodo);
+				if(elemAnt != null && elemAnt !== "undefined")
+				{
+					if(element != 'a'+numNodo) {
+						document.getElementById('a'+numNodo).innerHTML = "<canvas id='a"+numNodo+"Canv'  width='59' height='28'></canvas>"
+						var nodoImageAnt = new Image();
+						nodoImageAnt.src = "./imgNodoSprites.png";
+						var canvasAnt = document.getElementById("a"+numNodo+"Canv");
+						canvasAnt.width = 59;
+						canvasAnt.height = 28;
+						var nodoAnt = sprite ({context: canvasAnt.getContext("2d"), width: 59, height: 28, image: nodoImageAnt, numImg : 1});
+						nodoImageAnt.onload = function(){ nodoAnt.render(); }
+					}
+				}
+				var nodo = element.substring(1);
+				document.getElementById('numNodo').value = nodo;
+				document.getElementById('botones').style.display = 'inline';
+				if(nodo.length <= 1){
+					document.getElementById('nodoPar').style.display = 'inline';
+				} else {
+					document.getElementById('nodoPar').style.display = 'none';
+				}
+				
+				document.getElementById(element).innerHTML = "<canvas id='"+element+"Canv'  width='59' height='28'></canvas>"
+				var nodoImage = new Image();
+				nodoImage.src = "./imgNodoSprites.png";
+				var canvas = document.getElementById(element+"Canv");
+				canvas.width = 59;
+				canvas.height = 28;
+				var nodo = sprite ({context: canvas.getContext("2d"), width: 59, height: 28, image: nodoImage, numImg : 2});
+				nodoImage.onload = function(){ nodo.render(); }
+			}
+			
+			function sprite (options) {
+				var that = {};
+				that.context = options.context;
+				that.width = options.width;
+				that.height = options.height;
+				that.image = options.image;
+				that.numImg = options.numImg - 1;
+
+					that.render = function () {
+												that.context.drawImage(
+																		that.image,
+																		that.width * that.numImg,
+																		0,
+																		that.width,
+																		that.height,
+																		0,
+																		0,
+																		that.width,
+																		that.height);
+											};
+				return that;
+			}
+		</script>
+	</head>
+	<body>
+		<table id="botones" style="display:none;">
+			<tr>
+				<td>
+					Accion sobre el	 Nodo: <input type="hidden" name="numNodo" id="numNodo" disabled="true" size= "10">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="nodoPar" type="submit" value="Agregar Nodo" onclick="agregarNodo()" /> <input id="nodoHijo" type="submit" value = "Agregar Hijo Nodo" onclick="agregarHijo()" /> <input type="submit" value="Borrar Nodo(s)" onclick="borrarNodo()" />
+				</td>
+			</tr>
+		</table>
+
+
+		<div id="myTree3">
+			<ul>
+				<li id="1"><a id="a1" onclick="accion(this.id)"  ></a></li>
+			</ul>
+		</div>
+		
+	</body>
+</html>
